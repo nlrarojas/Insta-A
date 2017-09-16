@@ -7,6 +7,7 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.support.design.widget.Snackbar;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -20,21 +21,27 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.instaa.insta_a.controller.FilterApplicator;
 import com.instaa.insta_a.controller.PhotoManager;
 import com.instaa.insta_a.view.BlackWhiteOpcionsFilter;
 import com.instaa.insta_a.view.ImageDisplayFragment;
 import com.instaa.insta_a.view.PrincipalPage;
 
-import java.io.InputStream;
+import java.util.Observable;
+import java.util.Observer;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, ImageDisplayFragment.OnFragmentInteractionListener,
-        BlackWhiteOpcionsFilter.OnFragmentInteractionListener, PrincipalPage.OnFragmentInteractionListener{
+        BlackWhiteOpcionsFilter.OnFragmentInteractionListener, PrincipalPage.OnFragmentInteractionListener, Observer{
 
     private static final int PICK_IMAGE = 2;
     private static final int ACTION_TAKE_PHOTO = 1;
     private ImageView mImageView;
     private PhotoManager photoManager;
+    private int width;
+    private int height;
+    private Bitmap bitmap;
+    private Snackbar mySnackbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -118,11 +125,13 @@ public class MainActivity extends AppCompatActivity
         startActivity(intent);
         */
 
-        this.getSupportFragmentManager().beginTransaction().replace(R.id.contenedor, new ImageDisplayFragment()).commit();
-        this.getSupportFragmentManager().executePendingTransactions();
+        displayImageDisplayer();
         mImageView = (ImageView) findViewById(R.id.imageViewContainer);
         photoManager = new PhotoManager(mImageView, this);
         photoManager.dispatchTakePicture(1);
+        height = photoManager.getHeight();
+        width = photoManager.getWidth();
+        bitmap = photoManager.getmImageBitmap();
     }
 
     @Override
@@ -142,16 +151,14 @@ public class MainActivity extends AppCompatActivity
 
                 BitmapFactory.Options options = new BitmapFactory.Options();
                 options.inPreferredConfig = Bitmap.Config.ARGB_8888;
-                Bitmap bitmap = BitmapFactory.decodeFile(imagePath, options);
-                this.getSupportFragmentManager().beginTransaction().replace(R.id.contenedor, new ImageDisplayFragment()).commit();
-                this.getSupportFragmentManager().executePendingTransactions();
+                bitmap = BitmapFactory.decodeFile(imagePath, options);
+                displayImageDisplayer();
                 mImageView = (ImageView) findViewById(R.id.imageViewContainer);
                 mImageView.setImageBitmap(bitmap);
                 showElements();
-                // Do something with the bitmap
+                height = bitmap.getHeight();
+                width = bitmap.getWidth();
 
-
-                // At the end remember to close the cursor or you will end with the RuntimeException!
                 cursor.close();
             }
         }
@@ -166,12 +173,18 @@ public class MainActivity extends AppCompatActivity
     }
 
     public void showBlackWhiteFiltersOptions(View view){
-        this.getSupportFragmentManager().beginTransaction().replace(R.id.contenedor, new BlackWhiteOpcionsFilter()).commit();
+        BlackWhiteOpcionsFilter blackWhiteFragment = new BlackWhiteOpcionsFilter();
+        this.getSupportFragmentManager().beginTransaction().replace(R.id.contenedor, blackWhiteFragment).commit();
     }
 
     @Override
     public void onFragmentInteraction(Uri uri) {
 
+    }
+
+    public void displayImageDisplayer(){
+        this.getSupportFragmentManager().beginTransaction().replace(R.id.contenedor, new ImageDisplayFragment()).commit();
+        this.getSupportFragmentManager().executePendingTransactions();
     }
 
     private void showElements(){
@@ -183,5 +196,43 @@ public class MainActivity extends AppCompatActivity
         TxtVBlackWhite.setVisibility(View.VISIBLE);
         TextView TxtVConvolution = (TextView) findViewById(R.id.textViewConvolutions);
         TxtVConvolution.setVisibility(View.VISIBLE);
+    }
+
+    public void averagingFilter(View view){
+        showMessage(R.string.filter);
+        FilterApplicator filterApplicator = new FilterApplicator(width, height, bitmap, this, mImageView, 1);
+        filterApplicator.run();
+    }
+
+    public void desaturationFilter (View view){
+        showMessage(R.string.filter);
+        FilterApplicator filterApplicator = new FilterApplicator(width, height, bitmap, this, mImageView, 2);
+        filterApplicator.run();
+    }
+
+    public void maxDecomposition(View view){
+        showMessage(R.string.filter);
+        FilterApplicator filterApplicator = new FilterApplicator(width, height, bitmap, this, mImageView, 3);
+        filterApplicator.run();
+    }
+
+    public void minDecomposition(View view){
+        showMessage(R.string.filter);
+        FilterApplicator filterApplicator = new FilterApplicator(width, height, bitmap, this, mImageView, 4);
+        filterApplicator.run();
+    }
+
+    private void showMessage(int message){
+        mySnackbar = Snackbar.make(findViewById(R.id.contenedor), message, Snackbar.LENGTH_SHORT);
+        mySnackbar.show();
+    }
+
+    @Override
+    public void update(Observable o, Object arg) {
+        if(o instanceof FilterApplicator){
+            displayImageDisplayer();
+            mImageView = (ImageView) findViewById(R.id.imageViewContainer);
+            mImageView.setImageBitmap((Bitmap)arg);
+        }
     }
 }

@@ -26,11 +26,14 @@ public class PhotoManager {
 	private static final String BITMAP_STORAGE_KEY = "viewbitmap";
 	private static final String IMAGEVIEW_VISIBILITY_STORAGE_KEY = "imageviewvisibility";
 	private ImageView mImageView;
-	private Bitmap mImageBitmap;
+
+    private Bitmap mImageBitmap;
     private Activity activity;
 
 	private String mCurrentPhotoPath;
-    private int[] pixels;
+
+    private int width;
+    private int height;
 
     private static final String JPEG_FILE_PREFIX = "IMG_";
 	private static final String JPEG_FILE_SUFFIX = ".jpg";
@@ -125,8 +128,6 @@ public class PhotoManager {
 		/* Decode the JPEG file into a Bitmap */
         mImageBitmap = BitmapFactory.decodeFile(mCurrentPhotoPath, bmOptions);
 
-        pixels = new int[mImageBitmap.getHeight() * mImageBitmap.getWidth()];
-        mImageBitmap.getPixels(pixels, 0, mImageBitmap.getWidth(), 0, 0, mImageBitmap.getWidth(), mImageBitmap.getHeight());
 		/* Associate the Bitmap to the ImageView */
 		mImageView.setImageBitmap(mImageBitmap);
 		mImageView.setVisibility(View.VISIBLE);
@@ -186,11 +187,27 @@ public class PhotoManager {
         TxtVConvolution.setVisibility(View.VISIBLE);
     }
 
-    public int[] getPixels() {
-        return pixels;
+    public int getWidth() {
+        return width;
     }
 
-    public void setPixels(int[] pixels) {
-        this.pixels = pixels;
+    public void setWidth(int width) {
+        this.width = width;
+    }
+
+    public int getHeight() {
+        return height;
+    }
+
+    public void setHeight(int height) {
+        this.height = height;
+    }
+
+    public Bitmap getmImageBitmap() {
+        return mImageBitmap;
+    }
+
+    public void setmImageBitmap(Bitmap mImageBitmap) {
+        this.mImageBitmap = mImageBitmap;
     }
 }
