@@ -1,35 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/nav_camera"
+            android:id="@+id/nav_take_picture"
             android:icon="@drawable/ic_menu_camera"
-            android:title="Import" />
+            android:title="Tomar foto" />
         <item
-            android:id="@+id/nav_gallery"
+            android:id="@+id/nav_open_gallery"
             android:icon="@drawable/ic_menu_gallery"
-            android:title="Gallery" />
+            android:title="Abrir desde galeria" />
         <item
-            android:id="@+id/nav_slideshow"
-            android:icon="@drawable/ic_menu_slideshow"
-            android:title="Slideshow" />
+            android:id="@+id/nav_black_white_filters"
+            android:icon="@drawable/blanconegro"
+            android:title="Filtros Blanco y Negro" />
         <item
-            android:id="@+id/nav_manage"
-            android:icon="@drawable/ic_menu_manage"
-            android:title="Tools" />
+            android:id="@+id/nav_convolutions_filters"
+            android:icon="@drawable/convoluciones"
+            android:title="Convoluciones" />
     </group>
 
     <item android:title="Communicate">
         <menu>
             <item
-                android:id="@+id/nav_share"
-                android:icon="@drawable/ic_menu_share"
-                android:title="Share" />
-            <item
-                android:id="@+id/nav_send"
-                android:icon="@drawable/ic_menu_send"
-                android:title="Send" />
+                android:id="@+id/nav_log_out"
+                android:icon="@drawable/logout"
+                android:title="Salir" />
         </menu>
     </item>
 
