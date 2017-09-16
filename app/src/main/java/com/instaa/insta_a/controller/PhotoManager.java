@@ -1,35 +1,28 @@
-package com.instaa.insta_a;
+package com.instaa.insta_a.controller;
 
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.List;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.content.pm.ResolveInfo;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
-import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.VideoView;
+
+import com.instaa.insta_a.R;
 
 
 public class PhotoManager {
-	private static final int ACTION_TAKE_PHOTO_B = 1;
-
 	private static final String BITMAP_STORAGE_KEY = "viewbitmap";
 	private static final String IMAGEVIEW_VISIBILITY_STORAGE_KEY = "imageviewvisibility";
 	private ImageView mImageView;
@@ -37,8 +30,9 @@ public class PhotoManager {
     private Activity activity;
 
 	private String mCurrentPhotoPath;
+    private int[] pixels;
 
-	private static final String JPEG_FILE_PREFIX = "IMG_";
+    private static final String JPEG_FILE_PREFIX = "IMG_";
 	private static final String JPEG_FILE_SUFFIX = ".jpg";
 
 	private AlbumStorageDirFactory mAlbumStorageDirFactory = null;
@@ -111,8 +105,8 @@ public class PhotoManager {
 		int targetH = mImageView.getHeight();
 
 		/* Get the size of the image */
-		BitmapFactory.Options bmOptions = new BitmapFactory.Options();
-		bmOptions.inJustDecodeBounds = true;
+        BitmapFactory.Options bmOptions = new BitmapFactory.Options();
+        bmOptions.inJustDecodeBounds = true;
 		BitmapFactory.decodeFile(mCurrentPhotoPath, bmOptions);
 		int photoW = bmOptions.outWidth;
 		int photoH = bmOptions.outHeight;
@@ -129,10 +123,12 @@ public class PhotoManager {
 		bmOptions.inPurgeable = true;
 
 		/* Decode the JPEG file into a Bitmap */
-		Bitmap bitmap = BitmapFactory.decodeFile(mCurrentPhotoPath, bmOptions);
-		
+        mImageBitmap = BitmapFactory.decodeFile(mCurrentPhotoPath, bmOptions);
+
+        pixels = new int[mImageBitmap.getHeight() * mImageBitmap.getWidth()];
+        mImageBitmap.getPixels(pixels, 0, mImageBitmap.getWidth(), 0, 0, mImageBitmap.getWidth(), mImageBitmap.getHeight());
 		/* Associate the Bitmap to the ImageView */
-		mImageView.setImageBitmap(bitmap);
+		mImageView.setImageBitmap(mImageBitmap);
 		mImageView.setVisibility(View.VISIBLE);
 	}
 
@@ -188,5 +184,13 @@ public class PhotoManager {
         TxtVBlackWhite.setVisibility(View.VISIBLE);
         TextView TxtVConvolution = (TextView) activity.findViewById(R.id.textViewConvolutions);
         TxtVConvolution.setVisibility(View.VISIBLE);
+    }
+
+    public int[] getPixels() {
+        return pixels;
+    }
+
+    public void setPixels(int[] pixels) {
+        this.pixels = pixels;
     }
 }

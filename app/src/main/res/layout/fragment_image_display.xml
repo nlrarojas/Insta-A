@@ -7,58 +7,65 @@
     <ImageView
         android:layout_height="match_parent"
         android:layout_width="match_parent"
-        android:id="@+id/imageViewContainer" />
-    <ImageButton
-        android:id="@+id/imageButtonBlackWhite"
-        android:layout_width="wrap_content"
+        android:id="@+id/imageViewContainer"
+        android:layout_above="@+id/linearLayout2" />
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:srcCompat="@drawable/blanconegro"
-        android:background="@null"
-        android:onClick=""
-        android:clickable="true"
-        android:layout_marginStart="48dp"
-        android:layout_alignTop="@+id/imageButtonConvulucion"
-        android:layout_alignStart="@+id/textViewBlackWhite"
-        android:visibility="invisible" />
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Filtros blanco y negro"
-        android:textStyle="bold"
-        android:textColor="@android:color/black"
-        android:layout_marginBottom="13dp"
-        android:id="@+id/textViewBlackWhite"
-        android:layout_marginStart="35dp"
+        android:orientation="horizontal"
+        android:gravity="center"
         android:layout_alignParentBottom="true"
         android:layout_alignParentStart="true"
-        android:onClick=""
-        android:clickable="true"
-        android:visibility="invisible"/>
-    <ImageButton
-        android:id="@+id/imageButtonConvulucion"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:srcCompat="@drawable/convoluciones"
-        android:background="@null"
-        android:onClick=""
-        android:clickable="true"
-        android:layout_marginStart="46dp"
-        android:layout_marginBottom="12dp"
-        android:layout_above="@+id/textViewConvolutions"
-        android:layout_alignStart="@+id/textViewConvolutions"
-        android:visibility="invisible" />
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Filtros convoluciones"
-        android:textStyle="bold"
-        android:textColor="@android:color/black"
-        android:id="@+id/textViewConvolutions"
-        android:layout_alignBaseline="@+id/textViewBlackWhite"
-        android:layout_alignBottom="@+id/textViewBlackWhite"
-        android:layout_alignParentEnd="true"
-        android:layout_marginEnd="33dp"
-        android:onClick=""
-        android:clickable="true"
-        android:visibility="invisible" />
+        android:background="@android:color/background_light"
+        android:id="@+id/linearLayout2">
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:paddingRight="20dp">
+            <ImageButton
+                android:id="@+id/imageButtonBlackWhite"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:srcCompat="@drawable/blanconegro"
+                android:background="@null"
+                android:onClick="showBlackWhiteFiltersOptions"
+                android:clickable="true"  />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Filtros blanco y negro"
+                android:textStyle="bold"
+                android:textColor="#399464"
+                android:id="@+id/textViewBlackWhite"
+                android:onClick="showBlackWhiteFiltersOptions"
+                android:clickable="true" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:id="@+id/linearLayout"
+            android:gravity="center"
+            android:paddingLeft="20dp">
+            <ImageButton
+                android:id="@+id/imageButtonConvulucion"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:srcCompat="@drawable/convoluciones"
+                android:background="@null"
+                android:onClick=""
+                android:clickable="true" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Filtros convoluciones"
+                android:textStyle="bold"
+                android:textColor="#399464"
+                android:id="@+id/textViewConvolutions"
+                android:onClick=""
+                android:clickable="true" />
+        </LinearLayout>
+    </LinearLayout>
 </RelativeLayout>

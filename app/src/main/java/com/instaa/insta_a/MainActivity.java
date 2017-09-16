@@ -1,8 +1,12 @@
 package com.instaa.insta_a;
 
 import android.content.Intent;
+import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -12,12 +16,23 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.TextView;
+
+import com.instaa.insta_a.controller.PhotoManager;
+import com.instaa.insta_a.view.BlackWhiteOpcionsFilter;
+import com.instaa.insta_a.view.ImageDisplayFragment;
+import com.instaa.insta_a.view.PrincipalPage;
+
+import java.io.InputStream;
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, ImageDisplayFragment.OnFragmentInteractionListener {
+        implements NavigationView.OnNavigationItemSelectedListener, ImageDisplayFragment.OnFragmentInteractionListener,
+        BlackWhiteOpcionsFilter.OnFragmentInteractionListener, PrincipalPage.OnFragmentInteractionListener{
 
-    static final int REQUEST_IMAGE_CAPTURE = 1;
+    private static final int PICK_IMAGE = 2;
+    private static final int ACTION_TAKE_PHOTO = 1;
     private ImageView mImageView;
     private PhotoManager photoManager;
 
@@ -36,6 +51,7 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+        getSupportFragmentManager().beginTransaction().replace(R.id.contenedor, new PrincipalPage()).commit();
     }
 
     @Override
@@ -80,9 +96,9 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_take_picture) {
-            // Handle the camera action
+            takePicture(null);
         } else if (id == R.id.nav_open_gallery) {
-
+            openGallery(null);
         } else if (id == R.id.nav_black_white_filters) {
 
         } else if (id == R.id.nav_convolutions_filters) {
@@ -112,17 +128,60 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == RESULT_OK) {
-            photoManager.handleBigCameraPhoto();
+        if(resultCode == RESULT_OK) {
+            if (requestCode == ACTION_TAKE_PHOTO) {
+                photoManager.handleBigCameraPhoto();
+            } else if (requestCode == PICK_IMAGE) {
+                // Let's read picked image data - its URI
+                Uri pickedImage = data.getData();
+                // Let's read picked image path using content resolver
+                String[] filePath = { MediaStore.Images.Media.DATA };
+                Cursor cursor = getContentResolver().query(pickedImage, filePath, null, null, null);
+                cursor.moveToFirst();
+                String imagePath = cursor.getString(cursor.getColumnIndex(filePath[0]));
+
+                BitmapFactory.Options options = new BitmapFactory.Options();
+                options.inPreferredConfig = Bitmap.Config.ARGB_8888;
+                Bitmap bitmap = BitmapFactory.decodeFile(imagePath, options);
+                this.getSupportFragmentManager().beginTransaction().replace(R.id.contenedor, new ImageDisplayFragment()).commit();
+                this.getSupportFragmentManager().executePendingTransactions();
+                mImageView = (ImageView) findViewById(R.id.imageViewContainer);
+                mImageView.setImageBitmap(bitmap);
+                showElements();
+                // Do something with the bitmap
+
+
+                // At the end remember to close the cursor or you will end with the RuntimeException!
+                cursor.close();
+            }
         }
     }
 
     public void openGallery(View view){
+        Intent pickIntent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        pickIntent.setType("image/*");
+        Intent chooserIntent = Intent.createChooser(pickIntent, "Seleccionar desde");
 
+        startActivityForResult(chooserIntent, PICK_IMAGE);
+    }
+
+    public void showBlackWhiteFiltersOptions(View view){
+        this.getSupportFragmentManager().beginTransaction().replace(R.id.contenedor, new BlackWhiteOpcionsFilter()).commit();
     }
 
     @Override
     public void onFragmentInteraction(Uri uri) {
 
+    }
+
+    private void showElements(){
+        ImageButton btnBlackWhite = (ImageButton) findViewById(R.id.imageButtonBlackWhite);
+        btnBlackWhite.setVisibility(View.VISIBLE);
+        ImageButton btnConvolution = (ImageButton) findViewById(R.id.imageButtonConvulucion);
+        btnConvolution.setVisibility(View.VISIBLE);
+        TextView TxtVBlackWhite = (TextView) findViewById(R.id.textViewBlackWhite);
+        TxtVBlackWhite.setVisibility(View.VISIBLE);
+        TextView TxtVConvolution = (TextView) findViewById(R.id.textViewConvolutions);
+        TxtVConvolution.setVisibility(View.VISIBLE);
     }
 }

@@ -1,4 +1,4 @@
-package com.instaa.insta_a;
+package com.instaa.insta_a.controller;
 
 import java.io.File;
 

@@ -1,0 +1,69 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.instaa.insta_a.view.BlackWhiteOpcionsFilter">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_gravity="center">
+        <Button
+            android:id="@+id/ButtonBlackWhiteFilter1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Averaging"
+            android:background="#399464"
+            android:textAllCaps="false"
+            android:clickable="true"
+            android:onClick="averagingFilter"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:gravity="center"
+            android:layout_gravity="center" />
+        <Button
+            android:id="@+id/ButtonBlackWhiteFilter2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Desaturation"
+            android:background="#399464"
+            android:textAllCaps="false"
+            android:clickable="true"
+            android:onClick="averagingFilter"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:gravity="center"
+            android:layout_gravity="center" />
+        <Button
+            android:id="@+id/ButtonBlackWhiteFilter3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Decomposition Max"
+            android:background="#399464"
+            android:textAllCaps="false"
+            android:clickable="true"
+            android:onClick="averagingFilter"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:gravity="center"
+            android:layout_gravity="center"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"/>
+        <Button
+            android:id="@+id/ButtonBlackWhiteFilter4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Decomposition Min"
+            android:background="#399464"
+            android:textAllCaps="false"
+            android:clickable="true"
+            android:onClick="averagingFilter"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:gravity="center"
+            android:layout_gravity="center"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp" />
+    </LinearLayout>
+</FrameLayout>
