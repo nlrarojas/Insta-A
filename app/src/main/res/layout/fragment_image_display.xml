@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <ImageView
+        android:layout_height="match_parent"
+        android:layout_width="match_parent"
+        android:id="@+id/imageViewContainer" />
+    <ImageButton
+        android:id="@+id/imageButtonBlackWhite"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:srcCompat="@drawable/blanconegro"
+        android:background="@null"
+        android:onClick=""
+        android:clickable="true"
+        android:layout_marginStart="48dp"
+        android:layout_alignTop="@+id/imageButtonConvulucion"
+        android:layout_alignStart="@+id/textViewBlackWhite"
+        android:visibility="invisible" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Filtros blanco y negro"
+        android:textStyle="bold"
+        android:textColor="@android:color/black"
+        android:layout_marginBottom="13dp"
+        android:id="@+id/textViewBlackWhite"
+        android:layout_marginStart="35dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true"
+        android:onClick=""
+        android:clickable="true"
+        android:visibility="invisible"/>
+    <ImageButton
+        android:id="@+id/imageButtonConvulucion"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:srcCompat="@drawable/convoluciones"
+        android:background="@null"
+        android:onClick=""
+        android:clickable="true"
+        android:layout_marginStart="46dp"
+        android:layout_marginBottom="12dp"
+        android:layout_above="@+id/textViewConvolutions"
+        android:layout_alignStart="@+id/textViewConvolutions"
+        android:visibility="invisible" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Filtros convoluciones"
+        android:textStyle="bold"
+        android:textColor="@android:color/black"
+        android:id="@+id/textViewConvolutions"
+        android:layout_alignBaseline="@+id/textViewBlackWhite"
+        android:layout_alignBottom="@+id/textViewBlackWhite"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="33dp"
+        android:onClick=""
+        android:clickable="true"
+        android:visibility="invisible" />
+</RelativeLayout>

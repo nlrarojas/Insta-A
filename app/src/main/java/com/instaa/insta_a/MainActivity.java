@@ -1,8 +1,8 @@
 package com.instaa.insta_a;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -12,9 +12,14 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ImageView;
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+        implements NavigationView.OnNavigationItemSelectedListener, ImageDisplayFragment.OnFragmentInteractionListener {
+
+    static final int REQUEST_IMAGE_CAPTURE = 1;
+    private ImageView mImageView;
+    private PhotoManager photoManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +45,9 @@ public class MainActivity extends AppCompatActivity
             drawer.closeDrawer(GravityCompat.START);
         } else {
             super.onBackPressed();
+            if(photoManager != null){
+                photoManager.disappearElements();
+            }
         }
     }
 
@@ -89,6 +97,32 @@ public class MainActivity extends AppCompatActivity
     }
 
     public void takePicture(View view){
+        /*
+        Intent intent = new Intent(this,PhotoManager.class);
+        startActivity(intent);
+        */
+
+        this.getSupportFragmentManager().beginTransaction().replace(R.id.contenedor, new ImageDisplayFragment()).commit();
+        this.getSupportFragmentManager().executePendingTransactions();
+        mImageView = (ImageView) findViewById(R.id.imageViewContainer);
+        photoManager = new PhotoManager(mImageView, this);
+        photoManager.dispatchTakePicture(1);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK) {
+            photoManager.handleBigCameraPhoto();
+        }
+    }
+
+    public void openGallery(View view){
+
+    }
+
+    @Override
+    public void onFragmentInteraction(Uri uri) {
 
     }
 }
