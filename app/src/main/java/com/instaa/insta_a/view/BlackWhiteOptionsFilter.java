@@ -1,28 +1,24 @@
 package com.instaa.insta_a.view;
 
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 
-import com.instaa.insta_a.MainActivity;
 import com.instaa.insta_a.R;
 
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link BlackWhiteOpcionsFilter.OnFragmentInteractionListener} interface
+ * {@link BlackWhiteOptionsFilter.OnFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link BlackWhiteOpcionsFilter#newInstance} factory method to
+ * Use the {@link BlackWhiteOptionsFilter#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class BlackWhiteOpcionsFilter extends Fragment {
+public class BlackWhiteOptionsFilter extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -34,7 +30,7 @@ public class BlackWhiteOpcionsFilter extends Fragment {
 
     private OnFragmentInteractionListener mListener;
 
-    public BlackWhiteOpcionsFilter() {
+    public BlackWhiteOptionsFilter() {
         // Required empty public constructor
     }
 
@@ -44,11 +40,11 @@ public class BlackWhiteOpcionsFilter extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment BlackWhiteOpcionsFilter.
+     * @return A new instance of fragment BlackWhiteOptionsFilter.
      */
     // TODO: Rename and change types and number of parameters
-    public static BlackWhiteOpcionsFilter newInstance(String param1, String param2) {
-        BlackWhiteOpcionsFilter fragment = new BlackWhiteOpcionsFilter();
+    public static BlackWhiteOptionsFilter newInstance(String param1, String param2) {
+        BlackWhiteOptionsFilter fragment = new BlackWhiteOptionsFilter();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);

@@ -55,7 +55,7 @@
                 android:layout_height="wrap_content"
                 app:srcCompat="@drawable/convoluciones"
                 android:background="@null"
-                android:onClick=""
+                android:onClick="showConvolutionFilters"
                 android:clickable="true" />
             <TextView
                 android:layout_width="wrap_content"
@@ -64,7 +64,7 @@
                 android:textStyle="bold"
                 android:textColor="#399464"
                 android:id="@+id/textViewConvolutions"
-                android:onClick=""
+                android:onClick="showConvolutionFilters"
                 android:clickable="true" />
         </LinearLayout>
     </LinearLayout>

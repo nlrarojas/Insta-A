@@ -52,6 +52,12 @@ public class FilterApplicator extends Observable implements Runnable {
                 case 4:
                     minDecomposition();
                     break;
+                case 5:
+                    gaussianFilter();
+                    break;
+                case 6:
+                    ownFilter();
+                    break;
             }
             blockThread = true;
             setChanged();
@@ -137,5 +143,13 @@ public class FilterApplicator extends Observable implements Runnable {
             }
         }
         mImageView.setImageBitmap(newBitmap);
+    }
+
+    public void gaussianFilter(){
+
+    }
+
+    public void ownFilter(){
+
     }
 }

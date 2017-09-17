@@ -23,7 +23,8 @@ import android.widget.TextView;
 
 import com.instaa.insta_a.controller.FilterApplicator;
 import com.instaa.insta_a.controller.PhotoManager;
-import com.instaa.insta_a.view.BlackWhiteOpcionsFilter;
+import com.instaa.insta_a.view.BlackWhiteOptionsFilter;
+import com.instaa.insta_a.view.ConvolutionOptionsFilter;
 import com.instaa.insta_a.view.ImageDisplayFragment;
 import com.instaa.insta_a.view.PrincipalPage;
 
@@ -32,7 +33,8 @@ import java.util.Observer;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, ImageDisplayFragment.OnFragmentInteractionListener,
-        BlackWhiteOpcionsFilter.OnFragmentInteractionListener, PrincipalPage.OnFragmentInteractionListener, Observer{
+        BlackWhiteOptionsFilter.OnFragmentInteractionListener, PrincipalPage.OnFragmentInteractionListener,
+        ConvolutionOptionsFilter.OnFragmentInteractionListener, Observer{
 
     private static final int PICK_IMAGE = 2;
     private static final int ACTION_TAKE_PHOTO = 1;
@@ -90,6 +92,8 @@ public class MainActivity extends AppCompatActivity
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_log_out) {
+            finish();
+            System.exit(0);
             return true;
         }
 
@@ -102,29 +106,22 @@ public class MainActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_take_picture) {
+        if (id == R.id.nav_home) {
+            getSupportFragmentManager().beginTransaction().replace(R.id.contenedor, new PrincipalPage()).commit();
+        } else if (id == R.id.nav_take_picture) {
             takePicture(null);
         } else if (id == R.id.nav_open_gallery) {
             openGallery(null);
-        } else if (id == R.id.nav_black_white_filters) {
-
-        } else if (id == R.id.nav_convolutions_filters) {
-
         } else if (id == R.id.nav_log_out) {
-
+            finish();
+            System.exit(0);
         }
-
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
 
     public void takePicture(View view){
-        /*
-        Intent intent = new Intent(this,PhotoManager.class);
-        startActivity(intent);
-        */
-
         displayImageDisplayer();
         mImageView = (ImageView) findViewById(R.id.imageViewContainer);
         photoManager = new PhotoManager(mImageView, this);
@@ -158,7 +155,6 @@ public class MainActivity extends AppCompatActivity
                 showElements();
                 height = bitmap.getHeight();
                 width = bitmap.getWidth();
-
                 cursor.close();
             }
         }
@@ -173,7 +169,7 @@ public class MainActivity extends AppCompatActivity
     }
 
     public void showBlackWhiteFiltersOptions(View view){
-        BlackWhiteOpcionsFilter blackWhiteFragment = new BlackWhiteOpcionsFilter();
+        BlackWhiteOptionsFilter blackWhiteFragment = new BlackWhiteOptionsFilter();
         this.getSupportFragmentManager().beginTransaction().replace(R.id.contenedor, blackWhiteFragment).commit();
     }
 
@@ -220,6 +216,19 @@ public class MainActivity extends AppCompatActivity
         showMessage(R.string.filter);
         FilterApplicator filterApplicator = new FilterApplicator(width, height, bitmap, this, mImageView, 4);
         filterApplicator.run();
+    }
+
+    public void gaussianFilter(View view){
+
+    }
+
+    public void ownFilter(View view){
+
+    }
+
+    public void showConvolutionFilters(View view){
+        ConvolutionOptionsFilter convolutionOptionsFilter = new ConvolutionOptionsFilter();
+        this.getSupportFragmentManager().beginTransaction().replace(R.id.contenedor, convolutionOptionsFilter).commit();
     }
 
     private void showMessage(int message){

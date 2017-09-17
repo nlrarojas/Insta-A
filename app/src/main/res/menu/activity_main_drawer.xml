@@ -4,6 +4,10 @@
 
     <group android:checkableBehavior="single">
         <item
+            android:id="@+id/nav_home"
+            android:icon="@drawable/home"
+            android:title="Inicio"/>
+        <item
             android:id="@+id/nav_take_picture"
             android:icon="@drawable/ic_menu_camera"
             android:title="Tomar foto" />
@@ -11,17 +15,8 @@
             android:id="@+id/nav_open_gallery"
             android:icon="@drawable/ic_menu_gallery"
             android:title="Abrir desde galeria" />
-        <item
-            android:id="@+id/nav_black_white_filters"
-            android:icon="@drawable/blanconegro"
-            android:title="Filtros Blanco y Negro" />
-        <item
-            android:id="@+id/nav_convolutions_filters"
-            android:icon="@drawable/convoluciones"
-            android:title="Convoluciones" />
     </group>
-
-    <item android:title="Communicate">
+    <item android:title="">
         <menu>
             <item
                 android:id="@+id/nav_log_out"
