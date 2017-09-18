@@ -5,6 +5,8 @@ import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.widget.ImageView;
 
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.Observable;
 import java.util.Observer;
 import java.util.Random;
@@ -44,6 +46,7 @@ public class FilterApplicator extends Observable implements Runnable {
     @Override
     public void run() {
         while(!blockThread){
+            long start = System.currentTimeMillis();
             switch (filter){
                 case 1:
                     averagingFilter();
@@ -64,6 +67,11 @@ public class FilterApplicator extends Observable implements Runnable {
                     ownFilter();
                     break;
             }
+            long end = System.currentTimeMillis();
+
+            NumberFormat formatter = new DecimalFormat("#0.00000");
+            System.out.print("Tiempo de ejecución " + formatter.format((end - start) / 1000d) + " seconds");
+
             blockThread = true;
             setChanged();
             notifyObservers(newBitmap);

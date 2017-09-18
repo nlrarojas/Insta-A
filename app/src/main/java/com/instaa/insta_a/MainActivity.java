@@ -103,7 +103,7 @@ public class MainActivity extends AppCompatActivity
                     doubleBackToExitPressedOnce = false;
                 }
             }, 2000);
-            
+
             if(photoManager != null){
                 photoManager.disappearElements();
             }
