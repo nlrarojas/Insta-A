@@ -12,6 +12,7 @@
     <string name="cannot">Cannot</string>
     <string name="album_name">CameraSample</string>
     <string name="filter">Filtro aplicado</string>
+    <string name="exit_message">Presione de nuevo para salir</string>
     <string name="imageSaved">Imagen guardada</string>
 
     <!-- TODO: Remove or change this placeholder text -->

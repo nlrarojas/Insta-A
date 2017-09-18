@@ -8,6 +8,7 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Handler;
 import android.provider.MediaStore;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
@@ -20,11 +21,14 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.AdapterView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.instaa.insta_a.controller.FilterApplicator;
+import com.instaa.insta_a.controller.ListImageAdapter;
 import com.instaa.insta_a.controller.PhotoManager;
 import com.instaa.insta_a.view.BlackWhiteOptionsFilter;
 import com.instaa.insta_a.view.ConvolutionOptionsFilter;
@@ -53,6 +57,8 @@ public class MainActivity extends AppCompatActivity
     private int height;
     private Bitmap bitmap;
     private Snackbar mySnackbar;
+    private ListView imagesList;
+    private boolean doubleBackToExitPressedOnce;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,6 +78,9 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
         getSupportFragmentManager().beginTransaction().replace(R.id.contenedor, new PrincipalPage()).commit();
+        getSupportFragmentManager().executePendingTransactions();
+
+        this.doubleBackToExitPressedOnce = false;
     }
 
     @Override
@@ -80,7 +89,21 @@ public class MainActivity extends AppCompatActivity
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
-            super.onBackPressed();
+            if (doubleBackToExitPressedOnce) {
+                super.onBackPressed();
+                return;
+            }
+
+            this.doubleBackToExitPressedOnce = true;
+            showMessage(R.string.exit_message);
+
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    doubleBackToExitPressedOnce = false;
+                }
+            }, 2000);
+            
             if(photoManager != null){
                 photoManager.disappearElements();
             }
@@ -119,6 +142,8 @@ public class MainActivity extends AppCompatActivity
 
         if (id == R.id.nav_home) {
             getSupportFragmentManager().beginTransaction().replace(R.id.contenedor, new PrincipalPage()).commit();
+            getSupportFragmentManager().executePendingTransactions();
+            loadImages();
         } else if (id == R.id.nav_take_picture) {
             takePicture(null);
         } else if (id == R.id.nav_open_gallery) {
@@ -282,6 +307,41 @@ public class MainActivity extends AppCompatActivity
                 }
             }
         }
+    }
+
+    private void loadImages(){
+        File pathSD = Environment.getExternalStorageDirectory();
+        File directory = new File(pathSD + "/InstaA/");
+        imagesList = (ListView) findViewById(R.id.list1);
+        System.out.println(directory.listFiles().length);
+        final ListImageAdapter adapter = new ListImageAdapter(directory.listFiles(), this);
+        imagesList.setAdapter(adapter);
+        imagesList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                try {
+                    File imageFile = (File) adapter.getItem(position);
+                    showSelectedImage(imageFile.getPath());
+                } catch (Exception e) {
+
+                }
+            }
+        });
+    }
+
+    public void showSelectedImage(String imagePath){
+        getSupportFragmentManager().beginTransaction().replace(R.id.contenedor, new ImageDisplayFragment());
+        getSupportFragmentManager().executePendingTransactions();
+
+        BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inPreferredConfig = Bitmap.Config.ARGB_8888;
+        bitmap = BitmapFactory.decodeFile(imagePath, options);
+        displayImageDisplayer();
+        mImageView = (ImageView) findViewById(R.id.imageViewContainer);
+        mImageView.setImageBitmap(bitmap);
+        showElements();
+        height = bitmap.getHeight();
+        width = bitmap.getWidth();
     }
 
     @Override
