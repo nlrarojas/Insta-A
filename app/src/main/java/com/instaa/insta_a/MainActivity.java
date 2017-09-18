@@ -1,13 +1,16 @@
 package com.instaa.insta_a;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.ActivityCompat;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -28,8 +31,14 @@ import com.instaa.insta_a.view.ConvolutionOptionsFilter;
 import com.instaa.insta_a.view.ImageDisplayFragment;
 import com.instaa.insta_a.view.PrincipalPage;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.util.Observable;
 import java.util.Observer;
+import java.util.jar.Manifest;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, ImageDisplayFragment.OnFragmentInteractionListener,
@@ -57,6 +66,8 @@ public class MainActivity extends AppCompatActivity
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.setDrawerListener(toggle);
         toggle.syncState();
+
+        ActivityCompat.requestPermissions(MainActivity.this, new String[]{android.Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
@@ -186,7 +197,7 @@ public class MainActivity extends AppCompatActivity
     private void showElements(){
         ImageButton btnBlackWhite = (ImageButton) findViewById(R.id.imageButtonBlackWhite);
         btnBlackWhite.setVisibility(View.VISIBLE);
-        ImageButton btnConvolution = (ImageButton) findViewById(R.id.imageButtonConvulucion);
+        ImageButton btnConvolution = (ImageButton) findViewById(R.id.imageButtonConvolution);
         btnConvolution.setVisibility(View.VISIBLE);
         TextView TxtVBlackWhite = (TextView) findViewById(R.id.textViewBlackWhite);
         TxtVBlackWhite.setVisibility(View.VISIBLE);
@@ -219,11 +230,15 @@ public class MainActivity extends AppCompatActivity
     }
 
     public void gaussianFilter(View view){
-
+        showMessage(R.string.filter);
+        FilterApplicator filterApplicator = new FilterApplicator(width, height, bitmap, this, mImageView, 5);
+        filterApplicator.run();
     }
 
     public void ownFilter(View view){
-
+        showMessage(R.string.filter);
+        FilterApplicator filterApplicator = new FilterApplicator(width, height, bitmap, this, mImageView, 6);
+        filterApplicator.run();
     }
 
     public void showConvolutionFilters(View view){
@@ -236,12 +251,46 @@ public class MainActivity extends AppCompatActivity
         mySnackbar.show();
     }
 
+    public void saveImage(View view){
+        OutputStream fOut = null;
+        try {
+            System.out.println("Guardando");
+            //Ruta para donde está la SD
+            File pathSD = Environment.getExternalStorageDirectory();
+            //Carpeta donde se guardaran as imagenes
+            File directory = new File(pathSD + "/InstaA/");
+            directory.mkdirs();
+            //Nuevo archivo
+            int consecutive = directory.listFiles().length;
+            File newImage = new File(directory, "image" + (consecutive + 1) + ".jpg");
+            System.out.println("Consecutivo: " + consecutive);
+
+
+            fOut = new FileOutputStream(newImage);
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, fOut);
+            System.out.println("Guardado");
+            showMessage(R.string.imageSaved);
+        } catch (FileNotFoundException e) {
+            System.err.println(e.getMessage());
+        } finally {
+            if ( fOut != null ){
+                try {
+                    fOut.flush();
+                    fOut.close();
+                } catch (IOException e) {
+                    System.err.println(e.getMessage());
+                }
+            }
+        }
+    }
+
     @Override
     public void update(Observable o, Object arg) {
         if(o instanceof FilterApplicator){
             displayImageDisplayer();
             mImageView = (ImageView) findViewById(R.id.imageViewContainer);
-            mImageView.setImageBitmap((Bitmap)arg);
+            bitmap = (Bitmap)arg;
+            mImageView.setImageBitmap(bitmap);
         }
     }
 }

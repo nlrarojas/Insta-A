@@ -23,7 +23,7 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:gravity="center"
-            android:paddingRight="20dp">
+            android:paddingRight="40dp">
             <ImageButton
                 android:id="@+id/imageButtonBlackWhite"
                 android:layout_width="wrap_content"
@@ -35,7 +35,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Filtros blanco y negro"
+                android:text="Blanco y negro"
                 android:textStyle="bold"
                 android:textColor="#399464"
                 android:id="@+id/textViewBlackWhite"
@@ -46,11 +46,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:id="@+id/linearLayout"
-            android:gravity="center"
-            android:paddingLeft="20dp">
+            android:gravity="center">
             <ImageButton
-                android:id="@+id/imageButtonConvulucion"
+                android:id="@+id/imageButtonConvolution"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:srcCompat="@drawable/convoluciones"
@@ -60,11 +58,35 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Filtros convoluciones"
+                android:text="Convoluciones"
                 android:textStyle="bold"
                 android:textColor="#399464"
                 android:id="@+id/textViewConvolutions"
                 android:onClick="showConvolutionFilters"
+                android:clickable="true" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:paddingLeft="40dp">
+            <ImageButton
+                android:id="@+id/imageButtonSave"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:srcCompat="@drawable/save"
+                android:background="@null"
+                android:onClick="saveImage"
+                android:clickable="true" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Guardar"
+                android:textStyle="bold"
+                android:textColor="#399464"
+                android:id="@+id/textViewSave"
+                android:onClick="saveImage"
                 android:clickable="true" />
         </LinearLayout>
     </LinearLayout>

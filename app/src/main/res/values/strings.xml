@@ -11,7 +11,8 @@
     <string name="btnIntendV">Take Video</string>
     <string name="cannot">Cannot</string>
     <string name="album_name">CameraSample</string>
-    <string name="filter">Aplicando filtro</string>
+    <string name="filter">Filtro aplicado</string>
+    <string name="imageSaved">Imagen guardada</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

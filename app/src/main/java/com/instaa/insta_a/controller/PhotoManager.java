@@ -168,7 +168,7 @@ public class PhotoManager {
     public void disappearElements() {
         ImageButton btnBlackWhite = (ImageButton) activity.findViewById(R.id.imageButtonBlackWhite);
         btnBlackWhite.setVisibility(View.INVISIBLE);
-        ImageButton btnConvolution = (ImageButton) activity.findViewById(R.id.imageButtonConvulucion);
+        ImageButton btnConvolution = (ImageButton) activity.findViewById(R.id.imageButtonConvolution);
         btnConvolution.setVisibility(View.INVISIBLE);
         TextView TxtVBlackWhite = (TextView) activity.findViewById(R.id.textViewBlackWhite);
         TxtVBlackWhite.setVisibility(View.INVISIBLE);
@@ -179,7 +179,7 @@ public class PhotoManager {
     private void showElements(){
         ImageButton btnBlackWhite = (ImageButton) activity.findViewById(R.id.imageButtonBlackWhite);
         btnBlackWhite.setVisibility(View.VISIBLE);
-        ImageButton btnConvolution = (ImageButton) activity.findViewById(R.id.imageButtonConvulucion);
+        ImageButton btnConvolution = (ImageButton) activity.findViewById(R.id.imageButtonConvolution);
         btnConvolution.setVisibility(View.VISIBLE);
         TextView TxtVBlackWhite = (TextView) activity.findViewById(R.id.textViewBlackWhite);
         TxtVBlackWhite.setVisibility(View.VISIBLE);
