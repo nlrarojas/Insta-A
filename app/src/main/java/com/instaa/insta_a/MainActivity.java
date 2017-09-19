@@ -1,6 +1,5 @@
 package com.instaa.insta_a;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -42,7 +41,6 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.util.Observable;
 import java.util.Observer;
-import java.util.jar.Manifest;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, ImageDisplayFragment.OnFragmentInteractionListener,
@@ -141,9 +139,7 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_home) {
-            getSupportFragmentManager().beginTransaction().replace(R.id.contenedor, new PrincipalPage()).commit();
-            getSupportFragmentManager().executePendingTransactions();
-            loadImages();
+            goHome(null);
         } else if (id == R.id.nav_take_picture) {
             takePicture(null);
         } else if (id == R.id.nav_open_gallery) {
@@ -155,6 +151,12 @@ public class MainActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    public void goHome(View view){
+        getSupportFragmentManager().beginTransaction().replace(R.id.contenedor, new PrincipalPage()).commit();
+        getSupportFragmentManager().executePendingTransactions();
+        loadImages();
     }
 
     public void takePicture(View view){
@@ -232,38 +234,38 @@ public class MainActivity extends AppCompatActivity
 
     public void averagingFilter(View view){
         showMessage(R.string.filter);
-        FilterApplicator filterApplicator = new FilterApplicator(width, height, bitmap, this, mImageView, 1);
-        filterApplicator.run();
+        FilterApplicator filterApplicator = new FilterApplicator(width, height, bitmap, this, 1);
+        filterApplicator.applyFilter();
     }
 
     public void desaturationFilter (View view){
         showMessage(R.string.filter);
-        FilterApplicator filterApplicator = new FilterApplicator(width, height, bitmap, this, mImageView, 2);
-        filterApplicator.run();
+        FilterApplicator filterApplicator = new FilterApplicator(width, height, bitmap, this, 2);
+        filterApplicator.applyFilter();
     }
 
     public void maxDecomposition(View view){
         showMessage(R.string.filter);
-        FilterApplicator filterApplicator = new FilterApplicator(width, height, bitmap, this, mImageView, 3);
-        filterApplicator.run();
+        FilterApplicator filterApplicator = new FilterApplicator(width, height, bitmap, this, 3);
+        filterApplicator.applyFilter();
     }
 
     public void minDecomposition(View view){
         showMessage(R.string.filter);
-        FilterApplicator filterApplicator = new FilterApplicator(width, height, bitmap, this, mImageView, 4);
-        filterApplicator.run();
+        FilterApplicator filterApplicator = new FilterApplicator(width, height, bitmap, this, 4);
+        filterApplicator.applyFilter();
     }
 
     public void gaussianFilter(View view){
         showMessage(R.string.filter);
-        FilterApplicator filterApplicator = new FilterApplicator(width, height, bitmap, this, mImageView, 5);
-        filterApplicator.run();
+        FilterApplicator filterApplicator = new FilterApplicator(width, height, bitmap, this, 5);
+        filterApplicator.applyFilter();
     }
 
     public void ownFilter(View view){
         showMessage(R.string.filter);
-        FilterApplicator filterApplicator = new FilterApplicator(width, height, bitmap, this, mImageView, 6);
-        filterApplicator.run();
+        FilterApplicator filterApplicator = new FilterApplicator(width, height, bitmap, this, 6);
+        filterApplicator.applyFilter();
     }
 
     public void showConvolutionFilters(View view){
@@ -313,7 +315,6 @@ public class MainActivity extends AppCompatActivity
         File pathSD = Environment.getExternalStorageDirectory();
         File directory = new File(pathSD + "/InstaA/");
         imagesList = (ListView) findViewById(R.id.list1);
-        System.out.println(directory.listFiles().length);
         final ListImageAdapter adapter = new ListImageAdapter(directory.listFiles(), this);
         imagesList.setAdapter(adapter);
         imagesList.setOnItemClickListener(new AdapterView.OnItemClickListener() {

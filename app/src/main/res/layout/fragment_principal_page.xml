@@ -27,7 +27,9 @@
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/logo" />
+                    android:src="@drawable/logo"
+                    android:onClick="goHome"
+                    android:clickable="true"/>
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -35,7 +37,9 @@
                     android:textColor="#399464"
                     android:textStyle="bold"
                     android:textSize="20sp"
-                    android:paddingBottom="40dp"/>
+                    android:paddingBottom="40dp"
+                    android:onClick="goHome"
+                    android:clickable="true"/>
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

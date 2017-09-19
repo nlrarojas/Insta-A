@@ -15,67 +15,58 @@ import java.util.Random;
  * Created by Nelson on 16/9/2017.
  */
 
-public class FilterApplicator extends Observable implements Runnable {
+public class FilterApplicator extends Observable {
     private int width;
     private int height;
     private Bitmap bitmap, newBitmap;
-    private Activity activity;
-    private ImageView mImageView;
-    private boolean blockThread;
+
     private int filter;
     private static int [][] gaussianMask = {{1, 2, 1}, {2, 4, 2}, {1, 2, 1}};
-    private int [][] ownFilterMask;
+    private int [][] ownFilterMask = {{16,8,4,8,16}, {8,4,2,4,8}, {4,2,16,2,4}, {8,4,2,4,8}, {16,8,4,8,16}};
 
     private static int SIZE_GAUSSIAN_KERNEL = 3;
     private static int SIZE_OWN_KERNEL = 5;
     private double Factor = 1;
     private double Offset = 1;
 
-    public FilterApplicator(int width, int height, Bitmap bitmap, Activity activity, ImageView mImageView, int pFilter) {
+    public FilterApplicator(int width, int height, Bitmap bitmap, Activity activity, int pFilter) {
         this.width = width;
         this.height = height;
         this.bitmap = bitmap;
-        this.activity = activity;
-        this.mImageView = mImageView;
-        this.blockThread = false;
         this.filter = pFilter;
         this.addObserver((Observer) activity);
-        ownFilterMask = new int[SIZE_OWN_KERNEL][SIZE_OWN_KERNEL];
+        //ownFilterMask = new int[SIZE_OWN_KERNEL][SIZE_OWN_KERNEL];
     }
 
-    @Override
-    public void run() {
-        while(!blockThread){
-            long start = System.currentTimeMillis();
-            switch (filter){
-                case 1:
-                    averagingFilter();
-                    break;
-                case 2:
-                    desaturationFilter();
-                    break;
-                case 3:
-                    maxDecomposition();
-                    break;
-                case 4:
-                    minDecomposition();
-                    break;
-                case 5:
-                    gaussianFilter();
-                    break;
-                case 6:
-                    ownFilter();
-                    break;
-            }
-            long end = System.currentTimeMillis();
-
-            NumberFormat formatter = new DecimalFormat("#0.00000");
-            System.out.print("Tiempo de ejecución " + formatter.format((end - start) / 1000d) + " seconds");
-
-            blockThread = true;
-            setChanged();
-            notifyObservers(newBitmap);
+    public void applyFilter() {
+        long start = System.currentTimeMillis();
+        switch (filter){
+            case 1:
+                averagingFilter();
+                break;
+            case 2:
+                desaturationFilter();
+                break;
+            case 3:
+                maxDecomposition();
+                break;
+            case 4:
+                minDecomposition();
+                break;
+            case 5:
+                gaussianFilter();
+                break;
+            case 6:
+                ownFilter();
+                break;
         }
+        long end = System.currentTimeMillis();
+
+        NumberFormat formatter = new DecimalFormat("#0.00000");
+        System.out.print("Tiempo de ejecución " + formatter.format((end - start) / 1000d) + " seconds");
+
+        setChanged();
+        notifyObservers(newBitmap);
     }
 
     public void averagingFilter(){
@@ -272,12 +263,10 @@ public class FilterApplicator extends Observable implements Runnable {
     }
 
     public void ownFilter(){
-        //computeConvolution3x3();
         System.out.println("Filtro propio");
         int A, R, G, B;
         int sumR, sumG, sumB;
         int[][] pixels = new int[SIZE_OWN_KERNEL][SIZE_OWN_KERNEL];
-        generateKernel();
         newBitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
 
         for(int y = 0; y < height - 4; ++y) {
@@ -288,9 +277,9 @@ public class FilterApplicator extends Observable implements Runnable {
                 for(int i = 0; i < SIZE_OWN_KERNEL; ++i) {
                     for(int j = 0; j < SIZE_OWN_KERNEL; ++j) {
                         pixels[i][j] = bitmap.getPixel(x + i, y + j);
-                        sumR += (Color.red(pixels[i][j]) * ownFilterMask[i][j]) / 24;
-                        sumG += (Color.green(pixels[i][j]) * ownFilterMask[i][j]) / 24;
-                        sumB += (Color.blue(pixels[i][j]) * ownFilterMask[i][j]) / 24;
+                        sumR += (Color.red(pixels[i][j]) * ownFilterMask[i][j]) / 256;
+                        sumG += (Color.green(pixels[i][j]) * ownFilterMask[i][j]) / 256;
+                        sumB += (Color.blue(pixels[i][j]) * ownFilterMask[i][j]) / 256;
                     }
                 }
                 R = (int)(sumR / Factor + Offset);
@@ -318,7 +307,7 @@ public class FilterApplicator extends Observable implements Runnable {
         Random random = new Random();
         for (int i = 0; i < SIZE_OWN_KERNEL; i++) {
             for (int j = 0; j < SIZE_OWN_KERNEL; j++) {
-                ownFilterMask[i][j] = random.nextInt(4);
+                //ownFilterMask[i][j] = random.nextInt(4);
             }
         }
     }

@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.instaa.insta_a.R;
 
@@ -51,6 +52,14 @@ public class ListImageAdapter extends BaseAdapter {
         }
 
         ImageView image = (ImageView) convertView.findViewById(R.id.imageViewContainer);
+        TextView text = (TextView) convertView.findViewById(R.id.textImage);
+        String [] imageName = images[position].toString().split("/");
+        for (int i = 0; i < imageName.length; i++) {
+            if(imageName[i].contains(".")){
+                text.setText(imageName[i]);
+            }
+        }
+
         BitmapFactory.Options options = new BitmapFactory.Options();
         options.inPreferredConfig = Bitmap.Config.ARGB_8888;
         bitmap = BitmapFactory.decodeFile(images[position].getAbsolutePath(), options);
