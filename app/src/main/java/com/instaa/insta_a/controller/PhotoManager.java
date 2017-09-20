@@ -128,6 +128,9 @@ public class PhotoManager {
 		/* Decode the JPEG file into a Bitmap */
         mImageBitmap = BitmapFactory.decodeFile(mCurrentPhotoPath, bmOptions);
 
+		width = mImageBitmap.getWidth();
+		height = mImageBitmap.getHeight();
+
 		/* Associate the Bitmap to the ImageView */
 		mImageView.setImageBitmap(mImageBitmap);
 		mImageView.setVisibility(View.VISIBLE);

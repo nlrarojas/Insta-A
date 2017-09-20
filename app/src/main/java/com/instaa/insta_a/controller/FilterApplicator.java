@@ -39,6 +39,7 @@ public class FilterApplicator extends Observable {
     }
 
     public void applyFilter() {
+        System.out.println("Tiempo");
         long start = System.currentTimeMillis();
         switch (filter){
             case 1:

@@ -160,13 +160,10 @@ public class MainActivity extends AppCompatActivity
     }
 
     public void takePicture(View view){
-        displayImageDisplayer();
+        displayImageDisplayed();
         mImageView = (ImageView) findViewById(R.id.imageViewContainer);
         photoManager = new PhotoManager(mImageView, this);
         photoManager.dispatchTakePicture(1);
-        height = photoManager.getHeight();
-        width = photoManager.getWidth();
-        bitmap = photoManager.getmImageBitmap();
     }
 
     @Override
@@ -175,6 +172,9 @@ public class MainActivity extends AppCompatActivity
         if(resultCode == RESULT_OK) {
             if (requestCode == ACTION_TAKE_PHOTO) {
                 photoManager.handleBigCameraPhoto();
+                height = photoManager.getHeight();
+                width = photoManager.getWidth();
+                bitmap = photoManager.getmImageBitmap();
             } else if (requestCode == PICK_IMAGE) {
                 // Let's read picked image data - its URI
                 Uri pickedImage = data.getData();
@@ -187,7 +187,7 @@ public class MainActivity extends AppCompatActivity
                 BitmapFactory.Options options = new BitmapFactory.Options();
                 options.inPreferredConfig = Bitmap.Config.ARGB_8888;
                 bitmap = BitmapFactory.decodeFile(imagePath, options);
-                displayImageDisplayer();
+                displayImageDisplayed();
                 mImageView = (ImageView) findViewById(R.id.imageViewContainer);
                 mImageView.setImageBitmap(bitmap);
                 showElements();
@@ -216,7 +216,7 @@ public class MainActivity extends AppCompatActivity
 
     }
 
-    public void displayImageDisplayer(){
+    public void displayImageDisplayed(){
         this.getSupportFragmentManager().beginTransaction().replace(R.id.contenedor, new ImageDisplayFragment()).commit();
         this.getSupportFragmentManager().executePendingTransactions();
     }
@@ -337,7 +337,7 @@ public class MainActivity extends AppCompatActivity
         BitmapFactory.Options options = new BitmapFactory.Options();
         options.inPreferredConfig = Bitmap.Config.ARGB_8888;
         bitmap = BitmapFactory.decodeFile(imagePath, options);
-        displayImageDisplayer();
+        displayImageDisplayed();
         mImageView = (ImageView) findViewById(R.id.imageViewContainer);
         mImageView.setImageBitmap(bitmap);
         showElements();
@@ -348,7 +348,7 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void update(Observable o, Object arg) {
         if(o instanceof FilterApplicator){
-            displayImageDisplayer();
+            displayImageDisplayed();
             mImageView = (ImageView) findViewById(R.id.imageViewContainer);
             bitmap = (Bitmap)arg;
             mImageView.setImageBitmap(bitmap);
